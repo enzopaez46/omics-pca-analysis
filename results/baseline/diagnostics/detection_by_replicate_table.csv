@@ -1,0 +1,10 @@
+grupo,R1,R2,R3,R1_mayor_que_R3
+C_VM,139,171,171,False
+C_PIN,10,10,88,False
+C_RM,279,21,50,True
+P_VM,40,5,16,True
+P_PIN,494,176,28,True
+P_RM,697,211,15,True
+F1_VM,138,138,138,False
+F1_PIN,356,379,107,True
+F1_RM,4,15,15,False
