@@ -68,3 +68,34 @@ ser un efecto técnico de orden/lote y no biológico — aunque el hecho de que 
 repita parejo en las 9 combinaciones también podría indicar que no es tan sistemático,
 o que se mezcla con otras causas. Esto necesita información del diseño experimental
 que no está en `master_matrix.csv` para poder confirmarse.
+
+## Qué réplica conservamos al excluir las repetidas — a confirmar entre nosotros
+
+Para las variantes `results/sin_duplicados/` (23) y `results/solo_mediciones_reales/`
+(22) hubo que elegir cuál de las réplicas repetidas se queda. La regla que usamos es
+**conservar la de número de réplica más bajo** (la primera en el orden del archivo):
+
+| Condición | Réplicas iguales | Se queda | Se saca |
+|---|---|---|---|
+| `C_VM`  | R2 = R3           | R1 y R2 | `C_VM_R3` |
+| `F1_VM` | R1 = R2 = R3      | R1      | `F1_VM_R2`, `F1_VM_R3` |
+| `F1_RM` | R2 = R3           | R1 y R2 | `F1_RM_R3` |
+
+Son 4 columnas, y quedan 23 mediciones independientes de las 27 del archivo.
+
+**La regla es arbitraria y en este caso no cambia nada**: como las columnas son idénticas,
+da exactamente lo mismo quedarse con R2 que con R3. La anotamos solo para que la variante
+se pueda reproducir. Si algún día sacamos columnas *casi* iguales (no exactas), ahí la
+regla ya no sería neutral y habría que repensarla.
+
+**La variante de 22** suma a `F1_PIN_R2`, donde 396 de las 975 proteínas son el promedio
+de R1 y R3 (ver más arriba), así que tampoco es una medición del todo independiente. La
+separamos en dos variantes a propósito, para cambiar un factor por vez y poder ver el
+efecto de cada cosa.
+
+**Resultado**: ni sacando las repetidas ni sacando además la promediada cambia el PCA
+(PC1 va de 31.82% a 31.87% a 32.11%, correlación 0.9996). Detalle en
+`results/comparacion_27_vs_23.md` y en `docs/para_debatir.md`.
+
+**Falta confirmarlo entre nosotros**: la regla la elegí yo (Lucas) para poder medir el
+efecto, no la charlamos todavía.
