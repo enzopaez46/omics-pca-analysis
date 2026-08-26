@@ -61,14 +61,49 @@ conclusión definitiva — son patrones a interpretar con cautela.
 
 8. **Avisar siempre antes de sobrescribir** resultados de una variante ya generada.
 
+9. **Antes de correr una variante nueva, chequear el dato**: `python scripts/check_matrix.py`.
+   En la Etapa 1 los problemas de la matriz (`F1_PIN_R2` fuera de escala, réplicas
+   idénticas, cantidad de ceros) aparecieron de a uno y después de haber corrido el PCA.
+   El chequeo los detecta todos juntos y antes. Los avisos que aparezcan se clasifican
+   como error del dato, característica real del dato, o pregunta abierta — y las
+   decisiones que salgan de ahí van a `docs/design_decisions.md`.
+
+## Skills disponibles
+
+En `.claude/skills/` hay 8 skills que Claude activa solo cuando corresponde. No hace falta
+nombrarlas, pero se pueden pedir explícitamente. Están en español y adaptadas a este
+proyecto.
+
+| Skill | Para qué | Cuándo |
+|---|---|---|
+| `chequeo-matriz` | Calidad del dato antes de analizar | Antes de cada variante |
+| `investigacion-causa-raiz` | Por qué pasa algo inesperado | Ante un outlier o un resultado raro |
+| `explicar-metodologia` | Qué hace un método y por qué, en criollo | Cuando algo no queda claro |
+| `revision-por-pares` | Buscar errores en una variante o script | Después de implementar, antes de interpretar |
+| `sintesis-hallazgos` | Pasar de resultados sueltos a hallazgos con nivel de confianza | Etapa 5 |
+| `resumen-ejecutivo` | Resumen de una página para la reunión | Etapa 5 |
+| `control-antes-de-entregar` | Control final antes de mostrar algo a otra persona | Antes de la reunión |
+| `retrospectiva` | Cerrar una etapa mirando el proceso | Al terminar cada etapa |
+
+Las tres primeras son las del día a día. Las cinco restantes entran en juego al cerrar
+etapas y al preparar la revisión con la directora.
+
+Lo que ya cubren los documentos del proyecto **no** tiene skill, a propósito:
+`docs/PLAN_ETAPAS.md` es la planificación, `docs/design_decisions.md` es el registro de
+supuestos, y `docs/analysis_notes.md` es la bitácora.
+
 ## Estructura del proyecto
 
 ```
 omics-pca-analysis/
 ├── data/
 │   └── master_matrix.csv        # dato fuente, no se modifica
+├── .claude/
+│   └── skills/                  # skills del proyecto (ver seccion de arriba)
 ├── scripts/
+│   ├── check_matrix.py          # chequeo de calidad del dato, antes de analizar
 │   ├── run_pca.py               # script principal, parametrizable por variante
+│   ├── investigate_*.py         # diagnosticos puntuales de causa raiz
 │   └── utils.py                 # funciones compartidas (si hacen falta)
 ├── results/
 │   ├── baseline/
