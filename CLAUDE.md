@@ -39,8 +39,9 @@ conclusión definitiva — son patrones a interpretar con cautela.
    y por qué, en la conversación misma (no hace falta un documento aparte).
 
 4. **Cada corrida debe guardar en su carpeta de resultados**:
-   - Gráfico PC1 vs PC2 (y PC1 vs PC3 si aporta algo), coloreado por genotipo y con
-     forma distinta por etapa de maduración.
+   - Gráfico PC1 vs PC2 (y PC1 vs PC3 si aporta algo), coloreado por etapa de
+     maduración (VM=verde, PIN=naranja, RM=rojo, como el color real del tomate en
+     cada etapa) y con forma distinta por genotipo (C, P, F1, en negro).
    - Tabla de % de varianza explicada por componente.
    - Tabla de coordenadas de las muestras (scores).
    - Si es relevante para esa variante, proteínas con mayor contribución a PC1/PC2

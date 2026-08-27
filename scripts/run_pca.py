@@ -130,11 +130,16 @@ def parse_sample_metadata(sample_names):
     return metadata
 
 
+STAGE_PALETTE = {"VM": "#2ca02c", "PIN": "#ff7f0e", "RM": "#d62728"}
+
+
 def plot_pc1_pc2(scores, metadata, variance_explained, out_path, title):
     """
-    Grafica PC1 vs PC2. El color representa el genotipo (C, P, F1) y la forma
-    representa la etapa de maduración (VM, PIN, RM), para poder ver a simple
-    vista si las muestras se agrupan según alguno de los dos factores.
+    Grafica PC1 vs PC2. El color representa la etapa de maduración (VM, PIN,
+    RM), siguiendo el color real del tomate en cada etapa (verde, naranja,
+    rojo), y la forma representa el genotipo (C, P, F1) en negro, para poder
+    ver a simple vista si las muestras se agrupan según alguno de los dos
+    factores.
     """
     plot_df = scores[["PC1", "PC2"]].join(metadata)
 
@@ -150,8 +155,10 @@ def plot_pc1_pc2(scores, metadata, variance_explained, out_path, title):
         data=plot_df,
         x="PC1",
         y="PC2",
-        hue="genotype",
-        style="stage",
+        hue="stage",
+        hue_order=list(STAGE_PALETTE.keys()),
+        palette=STAGE_PALETTE,
+        style="genotype",
         s=120,
     )
     plt.xlabel(f"PC1 ({pc1_var:.1f}% varianza explicada)")
