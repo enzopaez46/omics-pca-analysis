@@ -98,3 +98,77 @@ revisar grupo por grupo (`detection_by_replicate_table.csv`) el patrón no es pa
 solo se cumple limpio en 2 de las 9 combinaciones genotipo-etapa. Quedó anotado como
 pregunta abierta en `design_decisions.md` (posible efecto de lote/orden), sin
 proponer todavía ninguna solución.
+
+## 2026-08-26 — Variantes: sacando las columnas repetidas (23) y la promediada (22)
+
+Corrimos el PCA sacando las 4 columnas que son copia exacta de otra (`C_VM_R3`,
+`F1_VM_R2`, `F1_VM_R3`, `F1_RM_R3`) → `results/sin_duplicados/`, y después sacando
+además `F1_PIN_R2`, que es promedio de R1 y R3 en 396 proteínas →
+`results/solo_mediciones_reales/`. Comparación en `results/comparacion_27_vs_23.md`.
+
+**Casi no cambia nada**: PC1 va de 31.82% (27 columnas) a 31.87% (23) a 32.11% (22), y
+la posición de las muestras correlaciona 0.9996 con la corrida original. Además
+proyectamos las 4 copias dentro del PCA de 23 y caen exactamente encima de su gemela
+(distancia 1e-15). Tiene sentido: una columna repetida no agrega ninguna dirección nueva
+de variación, solo duplica un punto. Los parches que le hicimos a la matriz no están
+distorsionando el PCA.
+
+**Pero la consistencia entre réplicas se veía mejor de lo que es.** Con 3 réplicas hay 3
+pares para comparar. En `C_VM` los pares dan 1.480, 1.480 y 0.000 — ese cero es R2 contra
+R3, que son la misma columna, así que no es "dos mediciones que coinciden", es un número
+comparado consigo mismo. El promedio (0.987) subestima el desacuerdo real (1.480) en un
+33%. En `F1_VM` los tres pares dan 0: no hay ni una comparación real, así que su
+consistencia no es perfecta, es **desconocida**. (Estos números están calculados todos
+sobre el mismo PCA del baseline, para aislar el efecto de las copias del efecto de
+recalcular el PCA.)
+
+**Y aparte, algo más grande**: la dispersión entre réplicas va de 0.20 (`F1_RM`, `P_VM`)
+a 62.2 (`P_RM`) según la condición. Son 300 veces de diferencia con el mismo protocolo.
+
+Duda para seguir: esa diferencia parece ir de la mano con cuántas proteínas detecta cada
+muestra (`P_RM` tiene R1 con 697 detectadas y R3 con 15). Si la consistencia entre
+réplicas depende sobre todo de la profundidad de la corrida y no del genotipo o la etapa,
+habría que pensar si el z-score sobre una matriz con 85% de ceros es el preprocesamiento
+adecuado, o si primero hay que igualar de alguna forma la profundidad de detección.
+
+## 2026-08-26 — Cruce con el material suplementario del paper de los NILs
+
+Leímos `docs/MaterialSuplementario/` y **son nuestros mismos parentales**: CAI (Caimanta,
+*S. lycopersicum*) es nuestro C, LA0722 (*S. pimpinellifolium*) es nuestro P, MG es
+nuestro VM y RR nuestro RM. El paper en vez del híbrido F1 trabaja con NILs, y no tiene
+la etapa PIN.
+
+**No se puede usar como réplica extra**: las tablas S3-S6 no tienen abundancias por
+muestra, tienen `t_statistic`, `P_Value` y `log2FoldChange` — el resultado de una
+comparación ya hecha con limma, no las mediciones. No hay ninguna columna para pegar al
+lado de las nuestras.
+
+**Sí sirvió como chequeo externo.** Los identificadores son UniProt igual que los
+nuestros, así que cruzamos las listas: de los 117 DEPs de CAI, 46 están en nuestra
+matriz; de los 342 de LA0722, 160. Después miramos si las proteínas que más pesan en
+nuestro PC1 y PC2 son las que el paper asocia a la maduración: **no hay ningún
+enriquecimiento** (en el top-100 de loadings aparecen 4-9 DEPs cuando por azar se
+esperarían 4.7-5.6; todos los p > 0.09, tanto en baseline como en filtro_min3).
+
+Ojo con sobre-interpretarlo: el solapamiento es parcial (39-47% de los DEPs están en
+nuestra matriz), son experimentos distintos con otro pipeline de cuantificación, y el
+paper compara solo MG contra RR. No prueba que nuestro PCA esté mal. Pero es la primera
+evidencia independiente de nuestros propios datos que apunta a lo mismo que la nota de
+arriba: lo que domina PC1 y PC2 no parece ser la biología de la maduración.
+
+**Encontramos dónde están los datos crudos de ese trabajo**: el paper es Plants 2023, 12,
+2812 (doi 10.3390/plants12152812) y depositó todo en PRIDE con el identificador
+**PXD036132**. Bajamos el archivo de mapeo de muestras y 12 de sus 24 muestras son 4 de
+nuestras 9 condiciones, con las mismas tres réplicas: CAI/MG y CAI/RR son nuestros `C_VM`
+y `C_RM`, y LA0722/MG y LA0722/RR son nuestros `P_VM` y `P_RM`. Justo dos de esas son las
+que nos dan problemas (`C_VM` tiene réplicas repetidas en nuestra matriz, y `P_RM` es la
+de dispersión más alta).
+
+El problema es que en PRIDE solo hay `.raw` (21 GB) y `.pdResult` (10 GB): ninguna matriz
+de abundancias procesada. Sacarla desde ahí es posible (los `.pdResult` de Proteome
+Discoverer son bases SQLite) pero lleva varios días. Detalle en
+`docs/MaterialSuplementario/PXD036132_correspondencia.md`.
+
+Pregunta para la directora, ahora concreta: ¿nos pueden pasar la tabla de abundancias por
+muestra de PXD036132? Los autores son el mismo grupo de las referencias 28-32, 66, 69 y
+70 del paper, o sea la misma línea de trabajo que este proyecto.
