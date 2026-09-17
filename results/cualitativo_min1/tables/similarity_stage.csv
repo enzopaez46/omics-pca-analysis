@@ -1,0 +1,4 @@
+group_a,group_b,n_a,n_b,shared,union,jaccard_pct,pct_of_a_shared,pct_of_b_shared
+VM,PIN,257,627,217,667,32.53,84.44,34.61
+VM,RM,257,783,206,834,24.7,80.16,26.31
+PIN,RM,627,783,461,949,48.58,73.52,58.88

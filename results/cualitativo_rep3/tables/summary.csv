@@ -1,0 +1,4 @@
+factor,presence_rule,n_detected_total,n_core_shared_by_3,pct_core,mean_jaccard_pct,n_C,n_P,n_F1,n_exclusive_C,n_exclusive_P,n_exclusive_F1,n_VM,n_PIN,n_RM,n_exclusive_VM,n_exclusive_PIN,n_exclusive_RM,n_R1,n_R2,n_R3,n_exclusive_R1,n_exclusive_R2,n_exclusive_R3
+genotype,rep3,185,20,10.81,25.59,88.0,29.0,166.0,14.0,3.0,90.0,,,,,,,,,,,,
+stage,rep3,185,8,4.32,18.26,,,,,,,160.0,91.0,16.0,88.0,21.0,2.0,,,,,,
+replicate,rep3,330,83,25.15,41.72,,,,,,,,,,,,,316.0,158.0,90.0,170.0,8.0,1.0

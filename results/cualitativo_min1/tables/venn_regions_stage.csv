@@ -1,0 +1,8 @@
+region,n_groups,n_proteins,pct_of_detected
+solo RM,1,306,31.45
+PIN ∩ RM,2,271,27.85
+VM ∩ PIN ∩ RM,3,190,19.53
+solo PIN,1,139,14.29
+VM ∩ PIN,2,27,2.77
+solo VM,1,24,2.47
+VM ∩ RM,2,16,1.64
