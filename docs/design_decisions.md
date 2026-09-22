@@ -68,3 +68,22 @@ ser un efecto técnico de orden/lote y no biológico — aunque el hecho de que 
 repita parejo en las 9 combinaciones también podría indicar que no es tan sistemático,
 o que se mezcla con otras causas. Esto necesita información del diseño experimental
 que no está en `master_matrix.csv` para poder confirmarse.
+
+## Análisis cualitativo — correr las tres reglas de presencia en vez de elegir una
+
+Al pasar al análisis de presencia/ausencia hubo que definir cuándo una proteína cuenta
+como "presente" en un grupo de 9 muestras (ej. en Caimanta). Enzo decidió correr y
+comparar las tres alternativas en vez de asumir una, siguiendo el mismo criterio que en
+la Etapa 2 con min2/min3:
+
+- `min1`: detectada en ≥1 de las 9 muestras del grupo.
+- `min2`: detectada en ≥2 de las 9 muestras del grupo.
+- `rep3`: detectada en las 3 réplicas de al menos una condición del grupo. Para la
+  variable réplica (R1/R2/R3), que no tiene réplicas anidadas, se aproxima con ≥3 de 9.
+
+**Resultado de la comparación** (ver `results/cualitativo_comparacion_reglas.md`):
+`min1` queda dominado por `P_RM_R1` (aporta 234 proteínas exclusivas de esa sola muestra)
+y `rep3` queda inflado en F1 y VM por las condiciones con réplicas idénticas, que cumplen
+"presente en las 3 réplicas" por construcción. `min2` es la menos sesgada de las tres,
+pero todavía no se elige una sola: la inestabilidad de los resultados entre reglas es
+parte del hallazgo y conviene mostrarla.

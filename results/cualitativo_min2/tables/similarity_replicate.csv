@@ -1,0 +1,4 @@
+group_a,group_b,n_a,n_b,shared,union,jaccard_pct,pct_of_a_shared,pct_of_b_shared
+R1,R2,527,253,239,541,44.18,45.35,94.47
+R1,R3,527,150,144,533,27.02,27.32,96.0
+R2,R3,253,150,146,257,56.81,57.71,97.33

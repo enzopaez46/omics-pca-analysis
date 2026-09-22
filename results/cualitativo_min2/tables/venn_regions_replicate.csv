@@ -1,0 +1,8 @@
+region,n_groups,n_proteins,pct_of_detected
+solo R1,1,286,52.67
+R1 ∩ R2 ∩ R3,3,142,26.15
+R1 ∩ R2,2,97,17.86
+solo R2,1,10,1.84
+R2 ∩ R3,2,4,0.74
+R1 ∩ R3,2,2,0.37
+solo R3,1,2,0.37

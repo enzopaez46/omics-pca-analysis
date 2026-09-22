@@ -98,3 +98,29 @@ revisar grupo por grupo (`detection_by_replicate_table.csv`) el patrón no es pa
 solo se cumple limpio en 2 de las 9 combinaciones genotipo-etapa. Quedó anotado como
 pregunta abierta en `design_decisions.md` (posible efecto de lote/orden), sin
 proponer todavía ninguna solución.
+
+## 2026-09-10 — Cambio de paradigma: análisis cualitativo (presencia/ausencia)
+
+Como el PCA venía explicando poca variación y estaba dominado por pocas muestras, se
+probó otra mirada: olvidarse de la abundancia y comparar solo **qué proteínas se detectan
+y cuáles no** en cada grupo, con diagramas de Venn y porcentajes de solapamiento entre
+genotipos (C=Caimanta, P=Pinton, F1), entre etapas (VM/PIN/RM) y entre réplicas
+(R1/R2/R3). Se corrieron tres reglas de "presencia" (`cualitativo_min1`, `_min2`,
+`_rep3`) porque el resultado depende bastante de cuán exigente se sea; la comparación
+está en `results/cualitativo_comparacion_reglas.md`.
+
+Lo más claro que apareció no es biológico: los repertorios de R1, R2 y R3 están
+anidados (R3 ⊂ R2 ⊂ R1) — casi todo lo que ve R3 lo ven también R2 y R1, pero R1 detecta
+286 proteínas que nadie más ve. Entre genotipos, con la regla intermedia (min2) el par
+más parecido es Pinton–F1 (47.8%) y F1 contiene el 82% del repertorio de Caimanta, algo
+esperable de un híbrido. Entre etapas, en cambio, el orden se da vuelta según la regla,
+así que no se puede leer nada todavía.
+
+Duda para seguir: si el efecto de réplica es de profundidad de corrida, ¿conviene
+comparar repertorios solo dentro de la misma réplica (ej. C vs P vs F1 usando solo R1)
+para sacarlo del medio? Y sigue en pie la pregunta para la directora sobre si R1/R2/R3
+se procesaron en tandas distintas.
+
+Para mirar las tres reglas juntas en vez de abrir tres carpetas, están los paneles
+comparativos en `results/cualitativo_comparado/` (README con todos los gráficos uno al
+lado del otro, generados con `scripts/compare_qualitative_rules.py`).

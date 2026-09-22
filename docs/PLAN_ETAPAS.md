@@ -53,6 +53,19 @@ representen "no detectado" y no "abundancia cero".
 **Comparación**: contra el resultado de la Etapa 1 (baseline). ¿Cambia mucho la
 separación entre grupos? ¿Cambian las proteínas más influyentes?
 
+## Etapa 2B — Cambio de paradigma: análisis cualitativo (presencia/ausencia)
+
+**Objetivo**: como el PCA explica poca varianza y está dominado por pocas muestras, dejar
+de lado la abundancia y comparar solo qué proteínas se detectan en cada grupo.
+
+**Qué se hace**: para cada una de las tres variables del diseño (genotipo C/P/F1, etapa
+VM/PIN/RM, réplica R1/R2/R3) se arma el repertorio de proteínas detectadas de cada grupo
+y se comparan con diagramas de Venn, heatmaps de similitud (Jaccard %) y tablas de
+intersecciones. Script: `scripts/run_qualitative.py --presence-rule {min1,min2,rep3}`.
+
+**Decisión asociada**: la regla de presencia (ver `docs/design_decisions.md`); se corren
+las tres y se comparan en `results/cualitativo_comparacion_reglas.md`.
+
 ## Etapa 3 — Variante: transformación y escalado
 
 **Objetivo**: evaluar si una transformación logarítmica (habitual en proteómica, porque
